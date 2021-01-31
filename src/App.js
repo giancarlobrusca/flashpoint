@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
+import domtoimage from "dom-to-image";
 
 const calc = (x, y) => [
   -(y - window.innerHeight / 2) / 20,
@@ -24,6 +25,7 @@ export default function App() {
   const [songName, setSongName] = React.useState("");
   const [artist, setArtist] = React.useState("");
   const [picture, setPicture] = React.useState();
+  const flashpoint = React.useRef();
 
   const settingSongName = (event) => {
     setSongName(event.target.value);
@@ -35,6 +37,22 @@ export default function App() {
 
   const handleCoverPictureChange = (e) => {
     setCoverImgSrc(e.target.files[0].name);
+  };
+
+  const exportFlashpoint = () => {
+    const node = flashpoint.current;
+
+    domtoimage
+      .toPng(node, { quality: 0.1 })
+      .then((dataUrl) => {
+        console.log(dataUrl);
+        var img = new Image();
+        img.src = dataUrl;
+        document.getElementById("result").appendChild(img);
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
   };
 
   return (
@@ -56,7 +74,7 @@ export default function App() {
           placeholder="Artista"
         />
         <ImgInput
-          for="cover-upload"
+          htmlFor="cover-upload"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -77,8 +95,11 @@ export default function App() {
           onChange={handleCoverPictureChange}
           style={{ display: "none" }}
         />
+        <button onClick={exportFlashpoint}>Exportá</button>
+        <div id="result"></div>
       </CustomizationDrawer>
-      <Preview>
+
+      <Preview ref={flashpoint}>
         <animated.div
           className="card"
           onMouseMove={({ clientX: x, clientY: y }) =>
@@ -116,10 +137,10 @@ export default function App() {
           >
             <SongTitle>{songName}</SongTitle>
 
-            <LikeIcon
+            {/* <LikeIcon
               src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/white-heart_1f90d.png"
               alt="like"
-            />
+            /> */}
           </div>
           <Artist>{artist}</Artist>
           <div
@@ -131,10 +152,10 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <PlayIcon
+            {/* <PlayIcon
               src="https://icon-library.com/images/play-icon-png-transparent/play-icon-png-transparent-4.jpg"
               alt="play"
-            />
+            /> */}
           </div>
         </animated.div>
       </Preview>
@@ -159,6 +180,7 @@ const CustomizationDrawer = styled.div`
   );
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
   z-index: 1;
+  overflow: auto;
 `;
 
 const Title = styled.h1`
