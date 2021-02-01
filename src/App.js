@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
+import styled from "styled-components";
 //import domtoimage from "dom-to-image";
 
 const calc = (x, y) => [
@@ -36,7 +36,8 @@ export default function App() {
   };
 
   const handleCoverPictureChange = (e) => {
-    setCoverImgSrc(e.target.files[0].name);
+    const ImgURL = URL.createObjectURL(e.target.files[0]);
+    setCoverImgSrc(ImgURL);
   };
 
   // const exportFlashpoint = () => {
@@ -57,23 +58,26 @@ export default function App() {
 
   return (
     <div style={{ display: "flex" }}>
-      <CustomizationDrawer>
-        <Title>¡Personalizá tu Flashpoint!</Title>
-        <Input
+      <div className="customization-drawer">
+        <h1 className="title">¡Personalizá tu Flashpoint!</h1>
+        <input
+          className="textfield"
           name="songname"
           type="text"
           value={songName}
           onChange={settingSongName}
           placeholder="Nombre de la canción"
         />
-        <Input
+        <input
+          className="textfield"
           name="songname"
           type="text"
           value={artist}
           onChange={settingArtist}
           placeholder="Artista"
         />
-        <ImgInput
+        <label
+          className="img-input"
           htmlFor="cover-upload"
           style={{
             display: "flex",
@@ -88,7 +92,7 @@ export default function App() {
             alt="imgIcon"
           />
           Elegí tu imagen
-        </ImgInput>
+        </label>
         <input
           type="file"
           id="cover-upload"
@@ -97,9 +101,9 @@ export default function App() {
         />
         {/* <button onClick={exportFlashpoint}>Exportá</button> */}
         <div id="result"></div>
-      </CustomizationDrawer>
+      </div>
 
-      <Preview ref={flashpoint}>
+      <div className="preview" ref={flashpoint}>
         <animated.div
           className="card"
           onMouseMove={({ clientX: x, clientY: y }) =>
@@ -108,7 +112,7 @@ export default function App() {
           onMouseLeave={() => setCardProps({ xys: [0, 0, 1] })}
           style={{ transform: cardProps.xys.interpolate(trans) }}
         >
-          <AlbumCover src={coverImgSrc} alt="albumcover" />
+          <AlbumCover imgUrl={coverImgSrc} />
           <div
             style={{
               display: "flex",
@@ -121,7 +125,7 @@ export default function App() {
               src="imgs/spotilogo.png"
               alt="SpotifyLogo"
             />
-            <SpotifyQR
+            <img
               style={{ width: "80%" }}
               src="imgs/spotifyqr.png"
               alt="spotiQR"
@@ -135,14 +139,15 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <SongTitle>{songName}</SongTitle>
+            <div className="song-title">{songName}</div>
 
-            <LikeIcon
+            <img
+              className="like-icon"
               src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/white-heart_1f90d.png"
               alt="like"
             />
           </div>
-          <Artist>{artist}</Artist>
+          <div className="artist">{artist}</div>
           <div
             style={{
               display: "flex",
@@ -152,105 +157,22 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <PlayIcon
+            <img
+              className="play-icon"
               src="https://icon-library.com/images/play-icon-png-transparent/play-icon-png-transparent-4.jpg"
               alt="play"
             />
           </div>
         </animated.div>
-      </Preview>
+      </div>
     </div>
   );
 }
 
-const CustomizationDrawer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  top: 0;
-  left: 0;
-  gap: 20px;
-  width: 400px;
-  height: 100vh;
-  background: linear-gradient(
-    90deg,
-    rgba(222, 157, 99, 1) 0%,
-    rgba(164, 102, 61, 1) 100%
-  );
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
-  z-index: 1;
-  overflow: auto;
-`;
-
-const Title = styled.h1`
-  color: white;
-  font-size: 1.3em;
-  text-align: center;
-`;
-
-const Input = styled.input`
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  transition: box-shadow ease-out 0.2s;
-
-  &:focus {
-    outline: 0;
-    box-shadow: 0 0 5px white;
-  }
-`;
-
-const ImgInput = styled.label`
-  cursor: pointer;
-  color: #888;
-  font-size: 0.9em;
-  border-radius: 10px;
-  padding: 10px;
-  border: none;
-  background-color: white;
-
-  &:hover {
-    box-shadow: 0 0 5px white;
-  }
-`;
-
-const Preview = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle, #de9d63 0%, #a4663d 100%);
-`;
-
-const AlbumCover = styled.img`
+const AlbumCover = styled.div`
   width: 230px;
-`;
-
-const SpotifyQR = styled.img`
-  width: 100%;
-`;
-
-const SongTitle = styled.div`
-  color: white;
-  font-weight: bold;
-  font-size: 1.2em;
-`;
-
-const LikeIcon = styled.img`
-  width: 20px;
-  height: 20px;
-`;
-
-const Artist = styled.div`
-  color: white;
-  font-weight: bold;
-  align-self: flex-start;
-  font-size: 0.8em;
-`;
-
-const PlayIcon = styled.img`
-  width: 50px;
-  height: 50px;
+  height: 1500px;
+  background-image: url(${(props) => props.imgUrl});
+  background-position: center center;
+  background-size: cover;
 `;
