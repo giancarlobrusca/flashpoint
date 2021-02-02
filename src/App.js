@@ -3,12 +3,6 @@ import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 //import domtoimage from "dom-to-image";
 
-const calc = (x, y) => [
-  -(y - window.innerHeight / 2) / 20,
-  (x - window.innerWidth / 1.6) / 20,
-  1,
-];
-
 const trans = (x, y, s) =>
   `perspective(300px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
 
@@ -16,6 +10,12 @@ export default function App() {
   const [coverImgSrc, setCoverImgSrc] = React.useState(
     "https://www.wolflair.com/wp-content/uploads/2017/01/placeholder.jpg"
   );
+
+  const calc = (x, y) => [
+    -(y - window.innerHeight / 2) / 20,
+    (x - window.innerWidth / (open ? 1.6 : 2)) / 20,
+    1,
+  ];
 
   const [cardProps, setCardProps] = useSpring(() => ({
     xys: [0, 0, 1],
