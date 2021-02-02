@@ -18,26 +18,6 @@ code {
     monospace;
 }
 
-.customization-drawer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  top: 0;
-  left: 0;
-  gap: 20px;
-  width: 400px;
-  height: 100vh;
-  /* background: linear-gradient(
-    90deg,
-    rgba(222, 157, 99, 1) 0%,
-    rgba(164, 102, 61, 1) 100%
-  ); */
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
-  z-index: 1;
-  overflow: auto;
-}
-
 .title {
   color: #de9d63;
   font-size: 1.3em;
@@ -73,15 +53,6 @@ code {
   box-shadow: 0 0 5px rgba(164, 102, 61, 1);
 }
 
-.preview {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle, #de9d63 0%, #a4663d 100%);
-}
-
 .card {
   height: 450px;
   width: 250px;
@@ -102,15 +73,9 @@ code {
   background: transparent;
 }
 
-.song-title {
-  color: white;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
 .like-icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .artist {
@@ -118,11 +83,7 @@ code {
   font-weight: bold;
   align-self: flex-start;
   font-size: 0.8em;
-}
-
-.play-icon {
-  width: 50px;
-  height: 50px;
+  margin-top: -3px;
 }
 
 .spotifyQR {

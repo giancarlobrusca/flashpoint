@@ -24,6 +24,8 @@ export default function App() {
 
   const [songName, setSongName] = React.useState("");
   const [artist, setArtist] = React.useState("");
+
+  const [open, setOpen] = React.useState(true);
   // const [picture, setPicture] = React.useState();
   const flashpoint = React.useRef();
 
@@ -58,7 +60,7 @@ export default function App() {
 
   return (
     <div style={{ display: "flex" }}>
-      <div className="customization-drawer">
+      <CustomizationDrawer open={open}>
         <h1 className="title">¡Personalizá tu Flashpoint!</h1>
         <input
           className="textfield"
@@ -101,9 +103,13 @@ export default function App() {
         />
         {/* <button onClick={exportFlashpoint}>Exportá</button> */}
         <div id="result"></div>
-      </div>
+      </CustomizationDrawer>
 
-      <div className="preview" ref={flashpoint}>
+      <DrawerHandleButton open={open} onClick={() => setOpen(!open)}>
+        {open ? "<" : ">"}
+      </DrawerHandleButton>
+
+      <Preview ref={flashpoint} open={open}>
         <animated.div
           className="card"
           onMouseMove={({ clientX: x, clientY: y }) =>
@@ -113,24 +119,12 @@ export default function App() {
           style={{ transform: cardProps.xys.interpolate(trans) }}
         >
           <AlbumCover imgUrl={coverImgSrc} />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <img
-              style={{ width: "20%" }}
-              src="imgs/spotilogo.png"
-              alt="SpotifyLogo"
-            />
-            <img
-              style={{ width: "80%" }}
-              src="imgs/spotifyqr.png"
-              alt="spotiQR"
-            />
-          </div>
+          <img
+            style={{ width: "100%", marginTop: "10px" }}
+            src="imgs/spotifylogoandqr.png"
+            alt="spotify-logo-qr"
+          />
+
           <div
             style={{
               width: "100%",
@@ -139,32 +133,33 @@ export default function App() {
               alignItems: "center",
             }}
           >
-            <div className="song-title">{songName}</div>
+            <SongTitle>{songName}</SongTitle>
 
-            <img
-              className="like-icon"
-              src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/white-heart_1f90d.png"
-              alt="like"
-            />
+            <img className="like-icon" src="imgs/like.png" alt="like" />
           </div>
           <div className="artist">{artist}</div>
+          <img
+            style={{ width: "100%", marginTop: "10px" }}
+            src="imgs/playerbar.png"
+            alt="player-bar"
+          />
           <div
             style={{
               display: "flex",
               width: "100%",
               height: "100%",
               justifyContent: "center",
-              alignItems: "center",
+              alignItems: "flex-end",
             }}
           >
-            <img
+            <PlayerButtons
               className="play-icon"
-              src="https://icon-library.com/images/play-icon-png-transparent/play-icon-png-transparent-4.jpg"
-              alt="play"
+              src="imgs/playerbuttons.png"
+              alt="player-buttons"
             />
           </div>
         </animated.div>
-      </div>
+      </Preview>
       <Footer>
         Made with ❤ by -
         <Link href="https://www.instagram.com/gianb__/"> Giancarlo Brusca</Link>
@@ -173,12 +168,78 @@ export default function App() {
   );
 }
 
+// Flying Button
+const DrawerHandleButton = styled.button`
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: ${(props) => (props.open ? "400px" : 0)};
+  transition: left ease-out 0.5s, box-shadow ease-out 0.2s;
+
+  color: white;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 5px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  background-color: transparent;
+  z-index: 1;
+
+  &:hover {
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+`;
+
+// Left Drawer
+const CustomizationDrawer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  left: ${(props) => (props.open ? 0 : "-400px")};
+  gap: 20px;
+  width: 400px;
+  height: 100vh;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
+  z-index: 1;
+  overflow: auto;
+  background-color: white;
+  transition: left ease-out 0.5s;
+`;
+
+// Preview
+const Preview = styled.div`
+  position: absolute;
+  width: ${(props) => (props.open ? `calc(100vw - 400px)` : `100vw`)};
+  height: 100vh;
+
+  left: ${(props) => (props.open ? "400px" : 0)};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #de9d63 0%, #a4663d 100%);
+  transition: left ease-out 0.5s, width ease-out 0.5s;
+`;
+
 const AlbumCover = styled.div`
   width: 230px;
   height: 1500px;
   background-image: url(${(props) => props.imgUrl});
   background-position: center center;
   background-size: cover;
+`;
+
+const SongTitle = styled.div`
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 5px;
 `;
 
 const Footer = styled.div`
@@ -203,4 +264,8 @@ const Link = styled.a`
   &:hover {
     color: violet;
   }
+`;
+
+const PlayerButtons = styled.img`
+  width: 100%;
 `;
