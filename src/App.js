@@ -165,6 +165,10 @@ export default function App() {
           </div>
         </animated.div>
       </div>
+      <Footer>
+        Made with ❤ by -
+        <Link href="https://www.instagram.com/gianb__/"> Giancarlo Brusca</Link>
+      </Footer>
     </div>
   );
 }
@@ -175,4 +179,28 @@ const AlbumCover = styled.div`
   background-image: url(${(props) => props.imgUrl});
   background-position: center center;
   background-size: cover;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  position: absolute;
+  width: 30%;
+  height: 40px;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+`;
+
+const Link = styled.a`
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color ease-out 0.2s;
+
+  &:hover {
+    color: violet;
+  }
 `;
