@@ -161,8 +161,9 @@ export default function App() {
         </animated.div>
       </Preview>
       <Footer>
-        Made with ❤ by -
-        <Link href="https://www.instagram.com/gianb__/"> Giancarlo Brusca</Link>
+        Made with ☕ by -
+        <Link href="https://www.instagram.com/gianb__/"> Giancarlo Brusca</Link>{" "}
+        - 🤵🏽
       </Footer>
     </div>
   );
@@ -259,10 +260,10 @@ const Link = styled.a`
   color: white;
   text-decoration: none;
   font-weight: bold;
-  transition: color ease-out 0.2s;
+  transition: box-shadow ease-out 0.2s;
 
   &:hover {
-    color: violet;
+    box-shadow: inset 0 0 20px #de9d63;
   }
 `;
 
