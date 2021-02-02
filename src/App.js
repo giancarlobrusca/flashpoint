@@ -87,7 +87,7 @@ export default function App() {
           }}
         >
           <img
-            style={{ width: "100px", height: "100px" }}
+            style={{ width: "100px", height: "130px" }}
             src={coverImgSrc}
             alt="imgIcon"
           />
