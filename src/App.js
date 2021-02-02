@@ -106,7 +106,11 @@ export default function App() {
       </CustomizationDrawer>
 
       <DrawerHandleButton open={open} onClick={() => setOpen(!open)}>
-        {open ? "<" : ">"}
+        {open ? (
+          <img height="20" src="imgs/arrow-left.png" alt="arrow-left" />
+        ) : (
+          <img height="20" src="imgs/arrow-right.png" alt="arrow-right" />
+        )}
       </DrawerHandleButton>
 
       <Preview ref={flashpoint} open={open}>
