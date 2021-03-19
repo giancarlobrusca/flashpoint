@@ -1,7 +1,6 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
-//import domtoimage from "dom-to-image";
+import { useSpring, animated } from "react-spring";
 
 const trans = (x, y, s) =>
   `perspective(300px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
@@ -26,7 +25,7 @@ export default function App() {
   const [artist, setArtist] = React.useState("");
 
   const [open, setOpen] = React.useState(true);
-  // const [picture, setPicture] = React.useState();
+
   const flashpoint = React.useRef();
 
   const settingSongName = (event) => {
@@ -40,23 +39,19 @@ export default function App() {
   const handleCoverPictureChange = (e) => {
     const ImgURL = URL.createObjectURL(e.target.files[0]);
     setCoverImgSrc(ImgURL);
+
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    formData.append("upload_preset", "ml_default");
+
+    fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
   };
-
-  // const exportFlashpoint = () => {
-  //   const node = flashpoint.current;
-
-  //   domtoimage
-  //     .toPng(node, { quality: 0.1 })
-  //     .then((dataUrl) => {
-  //       console.log(dataUrl);
-  //       var img = new Image();
-  //       img.src = dataUrl;
-  //       document.getElementById("result").appendChild(img);
-  //     })
-  //     .catch(function (error) {
-  //       console.error("oops, something went wrong!", error);
-  //     });
-  // };
 
   return (
     <div style={{ display: "flex" }}>
@@ -89,7 +84,7 @@ export default function App() {
           }}
         >
           <img
-            style={{ width: "100px", height: "130px" }}
+            style={{ width: "100px", height: "130px", objectFit: "cover" }}
             src={coverImgSrc}
             alt="imgIcon"
           />
@@ -122,7 +117,7 @@ export default function App() {
           onMouseLeave={() => setCardProps({ xys: [0, 0, 1] })}
           style={{ transform: cardProps.xys.interpolate(trans) }}
         >
-          <AlbumCover imgUrl={coverImgSrc} />
+          <AlbumCover src={coverImgSrc} alt="album-cover" />
           <img
             style={{ width: "100%", marginTop: "10px" }}
             src="imgs/spotifylogoandqr.png"
@@ -164,10 +159,45 @@ export default function App() {
           </div>
         </animated.div>
       </Preview>
+      <a
+        href="https://www.instagram.com/flashpointv/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            position: "absolute",
+            top: "10px",
+            right: "20px",
+            fontWeight: "bold",
+            fontSize: "2em",
+            color: "white",
+          }}
+        >
+          <img height="40" src="imgs/ig-logo.png" alt="ig-logo" />
+          Flashpoint
+        </div>
+      </a>
       <Footer>
-        Made with ☕ by -
-        <Link href="https://www.instagram.com/gianb__/"> Giancarlo Brusca</Link>{" "}
-        - 🤵🏽
+        Made with{" "}
+        <span role="img" aria-label="coffee">
+          ☕
+        </span>{" "}
+        by -
+        <Link
+          href="https://www.instagram.com/gianb__/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {" "}
+          Giancarlo Brusca
+        </Link>{" "}
+        -{" "}
+        <span role="img" aria-label="me">
+          🤵🏽
+        </span>
       </Footer>
     </div>
   );
@@ -177,9 +207,13 @@ export default function App() {
 const DrawerHandleButton = styled.button`
   cursor: pointer;
   position: absolute;
-  top: 0;
+  top: 10px;
   left: ${(props) => (props.open ? "400px" : 0)};
   transition: left ease-out 0.5s, box-shadow ease-out 0.2s;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
   font-size: 1.1em;
@@ -204,7 +238,7 @@ const CustomizationDrawer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   left: ${(props) => (props.open ? 0 : "-400px")};
   gap: 20px;
@@ -232,12 +266,18 @@ const Preview = styled.div`
   transition: left ease-out 0.5s, width ease-out 0.5s;
 `;
 
-const AlbumCover = styled.div`
+// const AlbumCover = styled.div`
+//   width: 230px;
+//   height: 1500px;
+//   background-image: url(${(props) => props.imgUrl});
+//   background-position: center center;
+//   background-size: cover;
+// `;
+
+const AlbumCover = styled.img`
   width: 230px;
   height: 1500px;
-  background-image: url(${(props) => props.imgUrl});
-  background-position: center center;
-  background-size: cover;
+  object-fit: cover;
 `;
 
 const SongTitle = styled.div`
