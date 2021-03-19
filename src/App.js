@@ -44,13 +44,10 @@ export default function App() {
     formData.append("file", e.target.files[0]);
     formData.append("upload_preset", "ml_default");
 
-    fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    fetch("https://api.cloudinary.com/v1_1/flashpoint/upload", {
+      method: "POST",
+      body: formData,
+    });
   };
 
   return (
